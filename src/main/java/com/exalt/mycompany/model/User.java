@@ -25,14 +25,12 @@ public class User implements Serializable {
     @JoinTable(name = "user_role", joinColumns =@JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @JsonManagedReference
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<Device> devices;
+    private Set<Device> devices;
 
     @OneToOne(mappedBy = "user")
-    @JsonIgnore
     private UserProfile userProfile;
 
     public int getId() {
@@ -68,20 +66,20 @@ public class User implements Serializable {
     }
 
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     @JsonManagedReference
-    public List<Device> getDevices() {
+    public Set<Device> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<Device> devices) {
+    public void setDevices(Set<Device> devices) {
         this.devices = devices;
     }
 

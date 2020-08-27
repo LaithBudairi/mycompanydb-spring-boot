@@ -1,41 +1,22 @@
-package com.exalt.mycompany.model;
+package com.exalt.mycompany.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.exalt.mycompany.model.Device;
 
-import javax.persistence.*;
 import java.util.Calendar;
 
-@Entity
-public class Location {
+public class LocationDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "device_id")
-    private Device device;
+    private DeviceDTO device;
     private String name;
     private double longitude;
     private double latitude;
-    @Temporal(TemporalType.TIMESTAMP)
     private Calendar date;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @JsonBackReference
-    public Device getDevice() {
+    public DeviceDTO getDevice() {
         return device;
     }
 
-    public void setDevice(Device device) {
+    public void setDevice(DeviceDTO device) {
         this.device = device;
     }
 
@@ -73,9 +54,8 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location{" +
-                "id=" + id +
-                ", device=" + device +
+        return "LocationDTO{" +
+                "device=" + device +
                 ", name='" + name + '\'' +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +

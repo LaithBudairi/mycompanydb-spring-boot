@@ -8,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.util.InputMismatchException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -21,6 +20,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         APIError error = new APIError("NOT_FOUND");
         error.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    protected ResponseEntity<APIError> handleEntityExists(EntityExistsException ex) {
+        APIError error = new APIError("BAD_REQUEST");
+        error.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }

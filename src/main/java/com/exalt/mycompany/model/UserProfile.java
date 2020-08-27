@@ -10,10 +10,10 @@ import javax.persistence.*;
 public class UserProfile {
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @MapsId
     private User user;
     @Column(name = "first_name")

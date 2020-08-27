@@ -1,10 +1,7 @@
 package com.exalt.mycompany.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,7 +12,7 @@ public class Role {
     private int id;
     @ManyToMany(mappedBy = "roles")
     @JsonBackReference
-    private List<User> users;
+    private Set<User> users;
     private String name;
 
     public int getId() {
@@ -26,12 +23,11 @@ public class Role {
         this.id = id;
     }
 
-
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 

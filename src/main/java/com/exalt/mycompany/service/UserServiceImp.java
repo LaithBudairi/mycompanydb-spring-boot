@@ -4,6 +4,8 @@ import com.exalt.mycompany.model.User;
 import com.exalt.mycompany.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class UserServiceImp implements UserService {
     @Override
     public List<User> getAllUsers() {
         List<User> users =  (List<User>) userRepository.findAll();
-        if(users.size() == 4) {
+        if(users.size() == 0) {
             throw new EntityNotFoundException("No Users Found");
 
         }
@@ -29,12 +31,30 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User getUserWithID(int id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No User "));
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No User With ID={" + id + "} Was Found"));
 
     }
 
     @Override
     public void createNewUser(User user) {
-        userRepository.save(user);
+        User u = userRepository.findDistinctByEmail(user.getEmail());
+
+        if(u == null)
+            userRepository.save(user);
+        else
+            throw new EntityExistsException("Duplicate User With Email={" + user.getEmail() + "}");
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(int id, User u) {
+        getUserWithID(id);
+        u.setId(id);
+        userRepository.save(u);
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
     }
 }
