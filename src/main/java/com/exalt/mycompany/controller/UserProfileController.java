@@ -36,7 +36,7 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
-    @GetMapping("userprofiles/")
+    @GetMapping("userprofiles")
     public List<UserProfileDTO> getUserProfiles() {
         return userProfileService.getAllUserProfiles().stream().map(userProfile -> userProfileMapper.map(userProfile, UserProfileDTO.class)).collect(Collectors.toList());
 
@@ -46,12 +46,12 @@ public class UserProfileController {
     public UserProfileDTO getUserWithID(@PathVariable(value = "id") int id) {
         userProfileMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PACKAGE_PRIVATE.PRIVATE);
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
         return userProfileMapper.map(userProfileService.getUserProfileWithID(id), UserProfileDTO.class);
 
     }
 
-    @PostMapping(value = "userprofiles/", consumes = MediaType.APPLICATION_JSON_VALUE) //Needs Fix
+    @PostMapping(value = "userprofiles", consumes = MediaType.APPLICATION_JSON_VALUE) //Needs Fix
     public void createNewUser(@RequestBody UserProfileDTO up) {
         userProfileService.createNewUserProfile(userProfileMapper.map(up, UserProfile.class));
     }
