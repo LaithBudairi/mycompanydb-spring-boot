@@ -11,7 +11,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
+//    @JsonBackReference
     private Set<User> users;
     private String name;
 

@@ -3,6 +3,8 @@ package com.exalt.mycompany.service;
 import com.exalt.mycompany.model.User;
 import com.exalt.mycompany.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityExistsException;
@@ -13,6 +15,9 @@ import java.util.List;
 public class UserServiceImp implements UserService {
 
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -39,8 +44,11 @@ public class UserServiceImp implements UserService {
     public void createNewUser(User user) {
         User u = userRepository.findDistinctByEmail(user.getEmail());
 
-        if(u == null)
+        if(u == null) {
+            String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
             userRepository.save(user);
+        }
         else
             throw new EntityExistsException("Duplicate User With Email={" + user.getEmail() + "}");
     }

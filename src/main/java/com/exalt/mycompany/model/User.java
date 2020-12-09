@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,10 +20,11 @@ public class User implements Serializable {
     private String userName;
     private String email;
     private String password;
-    @ManyToMany
+    private boolean enabled;
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns =@JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @JsonManagedReference
+//    @JsonManagedReference
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
@@ -65,6 +65,13 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Set<Role> getRoles() {
         return roles;
