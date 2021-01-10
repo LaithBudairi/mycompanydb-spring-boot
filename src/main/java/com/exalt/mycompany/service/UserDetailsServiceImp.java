@@ -30,7 +30,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
         // Find User
         Optional<User> user = userRepository.findByUserName(userName);
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
-        logger.info(user.get().getUserName());
         return user.map(MyUserDetails::new).get();
 
     }
