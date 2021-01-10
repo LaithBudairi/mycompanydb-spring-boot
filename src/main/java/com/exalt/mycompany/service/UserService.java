@@ -49,4 +49,5 @@ public interface UserService {
      * @return void
      */
     void deleteUser(int id);
+
 }
