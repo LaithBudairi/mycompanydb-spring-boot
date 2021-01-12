@@ -4,6 +4,7 @@ import com.exalt.mycompany.model.AuthenticationRequest;
 import com.exalt.mycompany.model.AuthenticationResponse;
 import com.exalt.mycompany.service.UserDetailsServiceImp;
 import com.exalt.mycompany.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.function.Function;
 
 @RequestMapping(value = "api/v1/")
 @RestController
@@ -46,6 +49,11 @@ public class AuthenticationController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+// custom claim
+//        Function <Claims, String> test = claims -> (String) claims.get("Test");
+//        String tt = jwtTokenUtil.extractClaim(jwt, test);
+//        System.out.println(tt);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
